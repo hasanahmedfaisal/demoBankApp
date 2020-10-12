@@ -5,10 +5,6 @@ import { BrowserRouter } from 'react-router-dom';
 
 /* eslint-disable */
 export default class BankApp extends Component {
-    constructor(props) {
-        super(props);
-    }
-
     render() {
         return (
             <BrowserRouter>

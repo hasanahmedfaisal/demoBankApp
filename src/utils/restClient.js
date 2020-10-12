@@ -1,8 +1,7 @@
 import axios from 'axios';
-import isEmpty from 'lodash/isEmpty';
 
 const getApiUrl = (url) => {
-    return `http://localhost:3000${url}`
+    return `http://localhost:3001${url}`
 }
 
 const get = async (url, queryParams) => {

@@ -10,7 +10,7 @@ class RouteConfig extends Component {
         return (
             <div>
                 <div className="name">
-                    Ghotala Bank
+                    Keepsafe Bank
                 </div>
                 <Switch>
                     {
