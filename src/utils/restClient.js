@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const getApiUrl = (url) => {
-    return `http://localhost:3001${url}`
+    return `https://bankmanagementsystemapp.herokuapp.com${url}`
 }
 
 const get = async (url, queryParams) => {
