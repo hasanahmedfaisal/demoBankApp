@@ -50,5 +50,37 @@ export default {
                 type: Constants.ACTIONS.UPDATE_ACCOUNT_ERROR
             })        
         }
+    },
+    creditAmount: (req) => async dispatch => {
+        try {
+            const creditAccountRequest = {
+                amount: req.deposit
+            }
+            await RestClient.patch(getUrl(`/credit/${req._id}`), creditAccountRequest)
+            return dispatch({
+                type: Constants.ACTIONS.UPDATE_ACCOUNT_SUCCESS
+            })
+        }
+        catch (error) {
+            return dispatch({
+                type: Constants.ACTIONS.UPDATE_ACCOUNT_ERROR
+            })        
+        }
+    },
+    debitAmount: (req) => async dispatch => {
+        try {
+            const debitAmountRequest = {
+                amount: req.deposit
+            }
+            await RestClient.patch(getUrl(`/debit/${req._id}`), debitAmountRequest)
+            return dispatch({
+                type: Constants.ACTIONS.UPDATE_ACCOUNT_SUCCESS
+            })
+        }
+        catch (error) {
+            return dispatch({
+                type: Constants.ACTIONS.UPDATE_ACCOUNT_ERROR
+            })        
+        }
     }
 }

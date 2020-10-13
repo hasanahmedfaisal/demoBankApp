@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react'
-import { Form, Input, InputNumber, Button } from 'antd';
+import { Form, Input, InputNumber, Button, Select } from 'antd';
+const { Option } = Select
 
 
 const layout = {
@@ -21,10 +22,73 @@ const layout = {
       buttonTitle: 'Create Account',
       isDepositRequired: true,
       isNameRequired: true,
-      isAccountNumberRequired: true
+      isAccountNumberRequired: true,
+      isUpdate: false
   }
 
 export default class AccountForm extends PureComponent {
+  updateComp = () => (
+    <React.Fragment>
+      <Form.Item label="Credit/Debit">
+        <Input.Group compact>
+          <Form.Item
+            name={['typeOfDeposit']}
+            noStyle
+            rules={[{ required: true, message: 'Debit or Credit is required' }]}
+          >
+            <Select placeholder="Select debit/credit">
+              <Option value="debit">Debit</Option>
+              <Option value="credit">Credit</Option>
+            </Select>
+          </Form.Item>
+          <Form.Item
+    name={['deposit']}
+    label=""
+    required={this.props.isDepositRequired}
+    rules={[
+      {
+        validator: (_, value) => {
+          if (value == null && this.props.isDepositRequired)
+            return Promise.reject('Amount is required!')
+          else if (typeof value !== 'number' && value !== null)
+            return Promise.reject('Amount is not a valid number!')
+          else if (value <= 0)
+            return Promise.reject('Amount must be greater than zero!')
+          else
+            return Promise.resolve()
+        }
+      },
+    ]}
+  >
+    <InputNumber defaultValue={this.props.deposit}/>
+  </Form.Item>
+        </Input.Group>
+      </Form.Item>
+  </React.Fragment>
+  )
+    
+   addAccountComp = () => (<Form.Item
+    name={['deposit']}
+    label="Deposit Amount"
+    required={this.props.isDepositRequired}
+    rules={[
+      {
+        validator: (_, value) => {
+          if (value == null && this.props.isDepositRequired)
+            return Promise.reject('Deposit Amount is required!')
+          else if (typeof value !== 'number' && value !== null)
+            return Promise.reject('Deposit Amount is not a valid number!')
+          else if (value <= 0)
+            return Promise.reject('Deposit Amount must be greater than zero!')
+          else
+            return Promise.resolve()
+        }
+      },
+    ]}
+  >
+    <InputNumber defaultValue={this.props.deposit}/>
+  </Form.Item>)
+    
     render(){
     return (
       <Form {...layout} name="nest-messages" onFinish={(values) => this.props.onFinish(values)} validateMessages={validateMessages}>
@@ -50,27 +114,7 @@ export default class AccountForm extends PureComponent {
         >
           <Input defaultValue={this.props.acno}/>
         </Form.Item>
-        <Form.Item
-          name={['deposit']}
-          label="Deposit Amount"
-          required={this.props.isDepositRequired}
-          rules={[
-            {
-              validator: (_, value) => {
-                if (value == null && this.props.isDepositRequired)
-                  return Promise.reject('Deposit Amount is required!')
-                else if (typeof value !== 'number' && value !== null)
-                  return Promise.reject('Deposit Amount is not a valid number!')
-                else if (value <= 0)
-                  return Promise.reject('Deposit Amount must be greater than zero!')
-                else
-                  return Promise.resolve()
-              }
-            },
-          ]}
-        >
-          <InputNumber defaultValue={this.props.deposit}/>
-        </Form.Item>
+        {!this.props.isUpdate ? this.addAccountComp(): this.updateComp()}
         <Form.Item wrapperCol={{ ...layout.wrapperCol, offset: 8 }}>
           <Button type="primary" htmlType="submit">
             {this.props.buttonTitle}

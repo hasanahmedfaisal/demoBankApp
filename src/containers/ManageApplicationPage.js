@@ -49,6 +49,22 @@ export function mapDispatchToProps(dispatch, ownProps) {
             else
                 errorCallBack()
         })
+    },
+    debitAmount: function(request,successCallBack, errorCallBack){
+        dispatch(AccountActions.debitAmount(request)).then((action) => {
+            if(action.type === Constants.ACTIONS.UPDATE_ACCOUNT_SUCCESS )
+                successCallBack()
+            else
+                errorCallBack()
+        })
+    },
+    creditAmount: function(request,successCallBack, errorCallBack){
+        dispatch(AccountActions.creditAmount(request)).then((action) => {
+            if(action.type === Constants.ACTIONS.UPDATE_ACCOUNT_SUCCESS )
+                successCallBack()
+            else
+                errorCallBack()
+        })
     }
 }
 }

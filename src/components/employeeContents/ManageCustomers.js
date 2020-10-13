@@ -11,6 +11,7 @@ class ManageCustomers extends PureComponent {
       showLoader: false,
       showErrorMessage: false,
       showAccountDetails: false,
+      fetchAccounts:false,
       accountDetails: {}
     }
   }
@@ -20,13 +21,21 @@ class ManageCustomers extends PureComponent {
   }
 
   componentDidUpdate(prevProps, prevState){
-    if(this.state.showAccountDetails !== prevState.showAccountDetails)
+    if((this.state.showAccountDetails !== prevState.showAccountDetails) || this.state.fetchAccounts)
       this.fetchAccounts()
   }
 
   successCallBack = () => {
     this.setState({
-        showLoader: false
+        showLoader: false,
+        fetchAccounts: false
+    })
+  }
+
+  updateSuccessCallBack = () => {
+    this.setState({
+        showLoader: false,
+        fetchAccounts: true
     })
   }
 
@@ -83,7 +92,10 @@ class ManageCustomers extends PureComponent {
       _id: this.state.accountDetails._id,
       ...values
     }
-    this.props.updateAccountDetails(request, this.successCallBack, this.errorCallBack)
+    if(values.typeOfDeposit === 'credit')
+      this.props.creditAmount(request, this.updateSuccessCallBack, this.errorCallBack)
+    else
+      this.props.debitAmount(request, this.updateSuccessCallBack, this.errorCallBack)
   }
   
   render() {
@@ -93,7 +105,8 @@ class ManageCustomers extends PureComponent {
       buttonTitle: 'Update Account Details',
       isDepositRequired: false,
       isNameRequired: false,
-      isAccountNumberRequired: false
+      isAccountNumberRequired: false,
+      isUpdate: true
     }
     const antIcon = <LoadingOutlined style={{ fontSize: 35 }} spin />;
     return (
